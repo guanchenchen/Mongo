@@ -1,0 +1,123 @@
+package mongos;
+
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.bson.Document;
+
+import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+public class Date {
+	public static void main(String[] args) {
+
+		ServerAddress serverAddress = new ServerAddress("172.16.2.208", 20000);
+
+		List<ServerAddress> addrs = new ArrayList<ServerAddress>();
+
+		addrs.add(serverAddress);
+
+		MongoCredential credential = MongoCredential.createScramSha1Credential("root", "testdb",
+				"7Ug6Xy0aoAZ3b6ga".toCharArray());
+
+		List<MongoCredential> credentials = new ArrayList<MongoCredential>();
+
+		credentials.add(credential);
+
+		MongoClient mongoClient = new MongoClient(addrs, credentials);
+
+		MongoDatabase mongoDatabase = mongoClient.getDatabase("testdb");
+
+		MongoCollection<Document> collection = mongoDatabase.getCollection("pad_record201912");
+
+		long startTime = System.currentTimeMillis();
+
+		for (int i = 1; i <= 30000; i++) {
+			Document document = new Document();
+			/**
+			 * String uuid = UUID.randomUUID().toString();
+			 * System.out.println(uuid); uuid = uuid.replace("-", "");
+			 * System.out.println(uuid);
+			 */
+			String uuid = UUID.randomUUID().toString();
+
+			uuid = uuid.replace("-", "");
+
+			document.append("_id", uuid);
+
+			document.append("peopleId", "722214314987761664");
+
+			document.append("peopleName", "管臣臣");
+
+			document.append("staffNumber", "");
+
+			document.append("mobile", "18655076073");
+
+			document.append("icno", "8655076073");
+
+			document.append("companyId", "5277");
+
+			document.append("companyName", "管晨晨gcc");
+
+			document.append("departmentId", "");
+
+			document.append("peopleType", 0);
+
+			document.append("authType", 0);
+
+			document.append("inoutType", 0);
+
+			document.append("deviceId", "18088037100005");
+
+			document.append("deviceName", "18088037100005");
+
+			document.append("isOffline", 0);
+
+			String time = "2019-12-02 17:00:07.089";
+
+			SimpleDateFormat simpledateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+			ParsePosition parseposition = new ParsePosition(0);
+
+			java.util.Date date = simpledateformat.parse(time, parseposition);
+
+			document.append("time", date);
+
+			document.append("createTime", date);
+
+			document.append("similarity", 88);
+
+			document.append("identifyImage", "201912/6m/1576388785218.jpg");
+
+			document.append("currentImage",
+					"http://172.16.2.219:27777/file/down/group2/M00/18/C2/rBADRF3whR2AVdHQAABdPrFwkKU915.jpg");
+
+			document.append("imageToken", "2b33562c-6dc6-4a1c-9f9b-0a697c5da7bd");
+
+			document.append("areaId", "722214215469510656");
+
+			document.append("areaName", "1");
+
+			List documents = new ArrayList();
+
+			documents.add(document);
+
+			collection.insertMany(documents);
+
+			System.out.println("添加了" + i + "人");
+
+		}
+
+		long entTime = System.currentTimeMillis();
+
+		System.out.println("耗时" + (entTime - startTime) + "ms");
+
+	}
+
+}
